@@ -21,9 +21,9 @@ spec:
     spec:
       containers:
         - name: catalog
-          image: saotech/catalog-service:2153532
+          image: saotech/catalog-service:215144a
           ports:
-            - containerPort: 8000
+            - containerPort: 9000
           envFrom:
             - configMapRef:
                 name: catalog-config
