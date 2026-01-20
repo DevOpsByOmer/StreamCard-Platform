@@ -25,10 +25,7 @@ jobs:
 
       - name: Build & Push Image
         run: |
-          ls 
-          ls services/
-          ls Services/
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/catalog-service:${IMAGE_TAG} services/catalog-service/.
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/catalog-service:${IMAGE_TAG} Services/Catalog-service
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/catalog-service:${IMAGE_TAG}
 
       - name: Update GitOps manifest
