@@ -8,6 +8,12 @@ spec:
   selector:
     matchLabels:
       app: catalog
+  strategy:
+   type: RollingUpdate
+   rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 1
+
   template:
     metadata:
       labels:
@@ -36,4 +42,5 @@ spec:
              port: 8000
            initialDelaySeconds: 10
            periodSeconds: 5
+
 
