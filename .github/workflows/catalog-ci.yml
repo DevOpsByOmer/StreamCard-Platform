@@ -31,7 +31,7 @@ jobs:
       - name: Update GitOps manifest
         run: |
           sed -i "s|catalog-service:.*|catalog-service:${IMAGE_TAG}|g" \
-          gitops/environments/dev/catalog/deployment.yaml
+          GitOps/environments/dev/catalog/deployment.yml
 
       - name: Commit & Push
         run: |
