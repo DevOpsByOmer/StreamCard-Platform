@@ -39,4 +39,4 @@ jobs:
           git config user.email "ci@github.com"
           git add GitOps/environments/dev/catalog/deployment.yml
           git commit -m "Update catalog image to ${IMAGE_TAG}"
-          git push
+          git push origin main
