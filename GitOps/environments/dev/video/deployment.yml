@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: video
-          image: saotech/video-service:latest
+          image: saotech/video-service:dd47578
           ports:
             - containerPort: 8000
           env:
