@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: payment
-          image: saotech/payment-service:latest
+          image: saotech/payment-service:c3d5fc8
           ports:
             - containerPort: 8000
           resources:
