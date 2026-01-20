@@ -1,0 +1,42 @@
+name: auth Service CI
+
+on:
+  push:
+    paths:
+      - "services/auth-service/**"
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set image tag
+        run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/auth-service:${IMAGE_TAG} Services/auth-service
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/auth-service:${IMAGE_TAG}
+
+      - name: Update GitOps manifest
+        run: |
+          sed -i "s|auth-service:.*|auth-service:${IMAGE_TAG}|g" \
+          GitOps/environments/dev/auth/deployment.yml
+
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "ci@github.com"
+          git add GitOps/environments/dev/auth/deployment.yml
+          git commit -m "Update auth image to ${IMAGE_TAG}"
+          git push origin main
