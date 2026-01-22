@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalog-config
+  namespace: catalog
+data:
+  POSTGRES_DB: catalogdb
+  DB_HOST: catalog-postgres
+  DB_PORT: "5432"

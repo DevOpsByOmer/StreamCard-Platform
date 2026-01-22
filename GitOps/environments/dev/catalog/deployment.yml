@@ -24,11 +24,13 @@ spec:
           image: saotech/catalog-service:215144a
           ports:
             - containerPort: 8000
+            
           envFrom:
             - configMapRef:
                 name: catalog-config
             - secretRef:
                 name: catalog-secret
+
           livenessProbe:
             httpGet:
              path: /health
