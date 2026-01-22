@@ -1,0 +1,41 @@
+name: payment CI deplying to acr
+
+on:
+  push:
+    paths:
+      - services/payment-service/**
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build & Push Image
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/payment-service:${IMAGE_TAG} Services/payment-service
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/payment-service:${IMAGE_TAG}
+
+      - name: Update GitOps manifest
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          sed -i "s|image: .*payment-service:.*|image: ${{ secrets.ACR_LOGIN_SERVER }}/payment-service:${IMAGE_TAG}|" \
+            GitOps/environments/dev/payment/deployment.yml
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add GitOps/environments/dev/payment/deployment.yml
+          git commit -am "Update payment image to ${IMAGE_TAG}"
+          git push
