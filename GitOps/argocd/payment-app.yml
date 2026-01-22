@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/DevOpsByOmer/StreamCard-Platform.git
+    repoURL: https://github.com/DevOpsByOmer/StreamCart-Platform.git
     targetRevision: main
     path: GitOps/environments/dev/payment
 
