@@ -16,7 +16,7 @@ spec:
           service:
             name: auth-service
             port:
-              number: 8000
+              number: 80
 
       - path: /api/catalog(/|$)(.*)
         pathType: Prefix
@@ -24,7 +24,7 @@ spec:
           service:
             name: catalog-service
             port:
-              number: 8000
+              number: 80
 
       - path: /api/payment(/|$)(.*)
         pathType: Prefix
