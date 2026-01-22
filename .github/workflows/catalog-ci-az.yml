@@ -1,10 +1,11 @@
-name: Catalog CI
+name: Catalog CI deplying to acr
 
 on:
   push:
     paths:
       - services/catalog-service/**
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-push:
