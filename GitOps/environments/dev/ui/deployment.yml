@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ui
-          image: saotech/ui-service:3126ce6
+          image: streamcartacrdev.azurecr.io/ui-service:614d2cb
           ports:
             - containerPort: 80
           resources:
