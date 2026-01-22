@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: payment
-          image: saotech/payment-service:c3d5fc8
+          image: streamcartacrdev.azurecr.io/payment-service:b16aa6e
           ports:
             - containerPort: 8000
           resources:
