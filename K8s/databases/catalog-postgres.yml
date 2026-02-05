@@ -3,18 +3,23 @@ kind: Deployment
 metadata:
   name: catalog-postgres
   namespace: catalog
+  labels:
+    app: catalog-db
+
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: catalog-postgres
+      app: catalog-db
+
   template:
     metadata:
       labels:
-        app: catalog-postgres
+        app: catalog-db
+
     spec:
       containers:
-        - name: postgres
+        - name: catalog-postgres
           image: postgres:15
           ports:
             - containerPort: 5432
@@ -22,13 +27,15 @@ spec:
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: catalog-config
+                  name: catalog-configmap
                   key: POSTGRES_DB
+
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: catalog-secret
                   key: POSTGRES_USER
+
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

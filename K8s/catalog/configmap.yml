@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: catalog-config
+  name: catalog-configmap
   namespace: catalog
 data:
   POSTGRES_DB: catalogdb

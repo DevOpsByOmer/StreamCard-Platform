@@ -3,23 +3,35 @@ kind: Deployment
 metadata:
   name: auth-service
   namespace: auth
+  labels:
+    app: backend
+
 spec:
-  replicas: 1
+  replicas: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
   selector:
     matchLabels:
-      app: auth
+      app: backend
+
   template:
     metadata:
       labels:
-        app: auth
+        app: backend
+
     spec:
       containers:
-        - name: auth
+        - name: auth-service
           image: saotech/auth-service:latest
           ports:
             - containerPort: 8000
           envFrom:
             - configMapRef:
-                name: auth-config
+                name: auth-configmap
             - secretRef:
                 name: auth-secret

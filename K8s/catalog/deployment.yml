@@ -3,15 +3,20 @@ kind: Deployment
 metadata:
   name: catalog-service
   namespace: catalog
+  labels:
+   app: catalog
+   
 spec:
   replicas: 2
   selector:
     matchLabels:
       app: catalog
+      
   template:
     metadata:
       labels:
         app: catalog
+       
     spec:
       containers:
         - name: catalog
@@ -20,6 +25,6 @@ spec:
             - containerPort: 8000
           envFrom:
             - configMapRef:
-                name: catalog-config
+                name: catalog-configmap
             - secretRef:
                 name: catalog-secret

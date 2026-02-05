@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: auth-postgres
   namespace: auth
+
 spec:
   replicas: 1
   selector:
@@ -19,18 +20,35 @@ spec:
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: auth-config
-                  key: POSTGRES_DB
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: auth-secret
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: auth-secret
-                  key: POSTGRES_PASSWORD
+           - name: auth-db
+             valueFrom:
+              configMapKeyRef:
+               name: auth-configmap
+               key: POSTGRES_DB
+
+           - name: db-hsot
+             valueFrom:
+              configMapKeyRef:
+               name: auth-configmap
+               key: DB_HOST
+
+           - name: DB-port
+             valueFrom:
+              configMapKeyRef:
+               name: auth-configmap
+               key: DB_PORT
+
+           - name: POSTGRES_USER
+             valueFrom:
+              secretKeyRef:
+               name : auth-secret
+               key: POSTGRES_USER
+
+           - name: POSTGRES_password
+             valueFrom:
+              secretKeyRef:
+               name: auth-secret
+               key:  POSTGRES_PASSWORD
+             
+            
+
