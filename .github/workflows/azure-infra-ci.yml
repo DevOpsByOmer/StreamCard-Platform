@@ -1,0 +1,58 @@
+name: Azure infrastructure Deployement
+
+on:
+   push:
+    paths:
+        - "terraform/streamCard Infra/**"
+    branches:
+        - main
+   workflow_dispatch:
+    inputs:
+      action:
+        description: 'Terraform action to perform (apply/destroy)'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
+
+env:
+  TF_WORKING_DIR: terraform/streamCard Infra
+
+jobs:
+    INFRA_DEPLOY:
+       runs-on: ubuntu-latest
+
+       steps:
+          - name: CODE CHECKOUT
+            uses: actions/checkout@v3
+        
+          - name: Azure Login
+            uses: azure/login@v2
+            with:
+              client-id: ${{ secrets.AZURE_CLIENT_ID }}
+              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} # or use a secret/env var
+
+          - name: Setup Terraform
+            uses: hashicorp/setup-terraform@v3
+
+          - name: Terraform Init 
+            run: terraform init
+
+          - name: Terraform Validate
+            run: terraform validate
+
+          - name: Terraform Plan
+            run: terraform plan -lock=false
+
+          - name: Terraform Apply or Destroy
+            run: |
+              if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.action }}" == "destroy" ]]; then
+                terraform destroy -auto-approve -lock=false
+              else
+                terraform apply -auto-approve -lock=false
+              fi
+
+         
