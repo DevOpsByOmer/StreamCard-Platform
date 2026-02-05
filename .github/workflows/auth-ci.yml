@@ -29,7 +29,7 @@ jobs:
 
             - name: Docker build and push
               run: |
-               docker build -it ${{ secrets.DOCKERHUB_USERNAME}}/${IMAGE_NAME}:${IMAGE_TAG} Services/auth-service
+               docker build -t ${{ secrets.DOCKERHUB_USERNAME}}/${IMAGE_NAME}:${IMAGE_TAG} Services/auth-service
                docker push  ${{ secrets.DOCKERHUB_USERNAME}}/${IMAGE_NAME}:${IMAGE_TAG}
             
             - name: Update Github Manifest
